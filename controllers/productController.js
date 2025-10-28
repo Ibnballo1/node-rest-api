@@ -1,5 +1,5 @@
 const Product = require("../modals/productModal");
-
+const { getPostData } = require("../utils");
 /// @Desc GET ALL PRODUCTS
 /// @Route GET /api/products
 /// @Access Public
@@ -37,10 +37,13 @@ async function getProduct(req, res, id) {
 /// @Access Public
 async function createProduct(req, res) {
   try {
+    const body = await getPostData(req);
+
+    const { title, description, price } = JSON.parse(body);
     const product = {
-      title: "Test Product",
-      description: "This is a test product",
-      price: 29.99,
+      title,
+      description,
+      price,
     };
     const newProduct = await Product.create(product);
     res.writeHead(201, { "content-type": "application/json" });
